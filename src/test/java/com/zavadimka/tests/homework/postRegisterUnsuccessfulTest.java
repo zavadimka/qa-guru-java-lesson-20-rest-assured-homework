@@ -1,4 +1,4 @@
-package com.zavadimka.restapitests.homework;
+package com.zavadimka.tests.homework;
 
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
@@ -8,28 +8,28 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
 
-public class getListUsersTest {
-
+public class postRegisterUnsuccessfulTest {
     @Test
-    @DisplayName("Get list users test")
-    void getListUsersShouldHaveStatus200() {
+    @DisplayName("Put Update response test")
+    void putUpdateResponseShouldHaveStatus200() {
+
         Response response = given()
                 .log().uri()
                 .log().method()
                 .log().body()
                 .contentType(JSON)
+                .body("{ \"email\": \"sydney@fife\" }")
                 .when()
-                .get("https://reqres.in/api/users?page=2")
+                .post("https://reqres.in/api/register")
                 .then()
                 .log().status()
                 .log().body()
-                .body(matchesJsonSchemaInClasspath("homework/schemas/list_users_response_schema.json"))
-                .statusCode(200)
+                .body(matchesJsonSchemaInClasspath("homework/schemas/register_unsuccessful_schema.json"))
+                .statusCode(400)
                 .extract().response();
 
-        assertThat(response.path("page"), is(2));
-        assertThat(response.path("data.id"), hasItems(7, 8, 9, 10, 11, 12));
+        assertThat(response.path("error"), is("Missing password"));
     }
 }

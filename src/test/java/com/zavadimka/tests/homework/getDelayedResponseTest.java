@@ -1,4 +1,4 @@
-package com.zavadimka.restapitests.homework;
+package com.zavadimka.tests.homework;
 
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
