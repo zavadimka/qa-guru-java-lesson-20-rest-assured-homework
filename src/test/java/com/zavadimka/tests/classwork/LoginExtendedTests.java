@@ -2,6 +2,7 @@ package com.zavadimka.tests.classwork;
 
 import com.zavadimka.models.lombok.LombokLoginBodyModel;
 import com.zavadimka.models.lombok.LombokLoginResponseModel;
+import com.zavadimka.models.lombok.LombokMissingPasswordResponseModel;
 import com.zavadimka.models.pojo.PojoLoginBodyModel;
 import com.zavadimka.models.pojo.PojoLoginResponseModel;
 import io.qameta.allure.Step;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.zavadimka.helpers.CustomAllureListener.withCustomTemplates;
+import static com.zavadimka.specs.LoginSpecification.*;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
@@ -82,8 +84,8 @@ public class LoginExtendedTests {
     }
 
     @Test
-    @DisplayName("REST API tests: Login extended tests with Lombok and Allure")
-    void postLoginExtendedLombokCustomAllureTestsResponse200() {
+    @DisplayName("REST API tests: Login extended test with Lombok and Allure")
+    void postLoginLombokCustomAllureTestsResponse200() {
 
         LombokLoginBodyModel authData = new LombokLoginBodyModel();
 
@@ -114,6 +116,52 @@ public class LoginExtendedTests {
                 assertThat(response.getToken(), is(notNullValue())));
     }
 
+
+    @Test
+    @DisplayName("REST API tests: Login test with Lombok, Allure and Specification")
+    void postLoginSpecLombokCustomAllureTestResponse200() {
+
+        LombokLoginBodyModel authData = new LombokLoginBodyModel();
+
+        authData.setEmail("eve.holt@reqres.in");
+        authData.setPassword("cityslicka");
+
+        LombokLoginResponseModel response = step("Make request to URL", () ->
+                given()
+                        .spec(loginRequestSpec)
+                        .body(authData)
+                    .when()
+                            .post("/")
+                    .then()
+                        .spec(loginResponseSpec)
+                        .extract().as(LombokLoginResponseModel.class));
+
+        step("Check response", () ->
+                assertThat(response.getToken(), is(notNullValue())));
+    }
+
+    @Test
+    @DisplayName("REST API tests: Login test with Missing Password Spec and Response 400")
+    void postLoginMissingPasswordSpecTest() {
+
+        LombokLoginBodyModel authData = new LombokLoginBodyModel();
+
+        authData.setEmail("eve.holt@reqres.in");
+//        authData.setPassword("cityslicka");   Комментируем пасс для теста
+
+         LombokMissingPasswordResponseModel response = step("Make request to URL", () ->
+                given()
+                        .spec(loginRequestSpec)
+                        .body(authData)
+                    .when()
+                        .post("/")
+                    .then()
+                        .spec(missingPasswordResponseSpec)
+                        .extract().as(LombokMissingPasswordResponseModel.class));
+
+        step("Check response", () ->
+                assertThat(response.getError(), is("Missing password")));
+    }
 
     @Test
     @DisplayName("REST API tests: POST negative 400")
