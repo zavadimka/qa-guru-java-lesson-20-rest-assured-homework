@@ -31,6 +31,7 @@ public class LoginExtendedTests {
                 .log().uri()
                 .log().method()
                 .log().body()
+                .log().headers()
                 .contentType(JSON)
                 .body(authData)
 
@@ -44,7 +45,7 @@ public class LoginExtendedTests {
             .statusCode(200)
             .extract().as(PojoLoginResponseModel.class);
 
-        assertEquals(notNullValue(), response.getToken());
+        assertThat(response.getToken(), is(notNullValue()));
     }
 
     @Test
@@ -73,7 +74,8 @@ public class LoginExtendedTests {
                 .statusCode(200)
                 .extract().as(LombokLoginResponseModel.class);
 
-        assertEquals(notNullValue(), response.getToken());
+        //assertEquals(notNullValue(), response.getToken());
+        assertThat(response.getToken(), is(notNullValue()));
     }
 
 
