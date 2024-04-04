@@ -1,6 +1,6 @@
-package com.zavadimka.models;
+package com.zavadimka.models.pojo;
 
-public class LoginBodyModel {
+public class PojoLoginBodyModel {
 
     String email, password;
 
