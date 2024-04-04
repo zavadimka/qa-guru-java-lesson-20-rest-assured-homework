@@ -10,7 +10,7 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class getListUsersTest {
+public class GetListUsersTest {
 
     @Test
     @DisplayName("Get list users test")

@@ -10,26 +10,27 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class getSingleResourceTest {
-
+public class PostCreateTest {
     @Test
-    @DisplayName("Get Single resource test")
-    void getSingleResourceShouldHaveStatus200() {
+    @DisplayName("Post Create response test")
+    void postCreateResponseShouldHaveStatus201() {
+
         Response response = given()
                 .log().uri()
                 .log().method()
                 .log().body()
                 .contentType(JSON)
+                .body("{ \"name\": \"morpheus\", \"job\": \"leader\" }")
                 .when()
-                .get("https://reqres.in/api/unknown/2")
+                .post("https://reqres.in/api/users")
                 .then()
                 .log().status()
                 .log().body()
-                .body(matchesJsonSchemaInClasspath("homework/schemas/single_resource_schema.json"))
-                .statusCode(200)
+                .body(matchesJsonSchemaInClasspath("homework/schemas/create_schema.json"))
+                .statusCode(201)
                 .extract().response();
 
-        assertThat(response.path("support.url"), is("https://reqres.in/#support-heading"));
-        assertThat(response.path("data.id"), is(2));
+        assertThat(response.path("name"), is("morpheus"));
+        assertThat(response.path("job"), is("leader"));
     }
 }

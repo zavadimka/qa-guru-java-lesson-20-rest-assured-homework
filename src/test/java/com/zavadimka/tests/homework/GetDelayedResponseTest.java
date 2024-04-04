@@ -13,7 +13,7 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class getDelayedResponseTest {
+public class GetDelayedResponseTest {
 
     @Test
     @DisplayName("Get Delayed response test")
