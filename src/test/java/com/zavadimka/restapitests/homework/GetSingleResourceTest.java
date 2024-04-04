@@ -8,29 +8,28 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 
-public class putUpdateTest {
+public class GetSingleResourceTest extends TestBase {
+
     @Test
-    @DisplayName("Put Update response test")
-    void putUpdateResponseShouldHaveStatus200() {
-
+    @DisplayName("Get Single resource test")
+    void getSingleResourceShouldHaveStatus200() {
         Response response = given()
                 .log().uri()
                 .log().method()
                 .log().body()
                 .contentType(JSON)
-                .body("{ \"name\": \"morpheus\", \"job\": \"zion resident\" }")
                 .when()
-                .put("https://reqres.in/api/users/2")
+                .get("/unknown/2")
                 .then()
                 .log().status()
                 .log().body()
-                .body(matchesJsonSchemaInClasspath("homework/schemas/update_schema.json"))
+                .body(matchesJsonSchemaInClasspath("homework/schemas/single_resource_schema.json"))
                 .statusCode(200)
                 .extract().response();
 
-        assertThat(response.path("name"), is("morpheus"));
-        assertThat(response.path("job"), is("zion resident"));
+        assertThat(response.path("support.url"), is("https://reqres.in/#support-heading"));
+        assertThat(response.path("data.id"), is(2));
     }
 }

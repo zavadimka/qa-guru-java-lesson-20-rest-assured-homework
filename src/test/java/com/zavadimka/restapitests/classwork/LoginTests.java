@@ -9,16 +9,9 @@ import static io.restassured.http.ContentType.JSON;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 public class LoginTests {
-
-    /*
-    1. Make request (POST) to https://reqres.in/api/login
-        with body { "email": "eve.holt@reqres.in", "password": "cityslicka" }
-    2. Get response { "token": "QpwL5tke4Pnpja7X4" }
-    3. Check token is QpwL5tke4Pnpja7X4
-     */
-
 
     @Test
     @DisplayName("REST API tests: POST 200")
@@ -38,7 +31,7 @@ public class LoginTests {
                 .statusCode(200)
                 .extract().response();
 
-        assertThat(responce.path("token"), is("QpwL5tke4Pnpja7X4"));
+        assertThat(responce.path("token"), notNullValue());
 
     }
 

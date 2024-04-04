@@ -6,13 +6,10 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 
-public class postRegisterUnsuccessfulTest {
+public class DeleteTest extends TestBase {
     @Test
-    @DisplayName("Put Update response test")
+    @DisplayName("Delete response test")
     void putUpdateResponseShouldHaveStatus200() {
 
         Response response = given()
@@ -20,16 +17,12 @@ public class postRegisterUnsuccessfulTest {
                 .log().method()
                 .log().body()
                 .contentType(JSON)
-                .body("{ \"email\": \"sydney@fife\" }")
                 .when()
-                .post("https://reqres.in/api/register")
+                .delete("/users/2")
                 .then()
                 .log().status()
                 .log().body()
-                .body(matchesJsonSchemaInClasspath("homework/schemas/register_unsuccessful_schema.json"))
-                .statusCode(400)
+                .statusCode(204)
                 .extract().response();
-
-        assertThat(response.path("error"), is("Missing password"));
     }
 }

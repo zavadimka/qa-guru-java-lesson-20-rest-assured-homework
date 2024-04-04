@@ -8,29 +8,28 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
 
-public class postCreateTest {
+public class PostRegisterUnsuccessfulTest extends TestBase {
     @Test
-    @DisplayName("Post Create response test")
-    void postCreateResponseShouldHaveStatus201() {
+    @DisplayName("Put Update response test")
+    void putUpdateResponseShouldHaveStatus200() {
 
         Response response = given()
                 .log().uri()
                 .log().method()
                 .log().body()
                 .contentType(JSON)
-                .body("{ \"name\": \"morpheus\", \"job\": \"leader\" }")
+                .body("{ \"email\": \"sydney@fife\" }")
                 .when()
-                .post("https://reqres.in/api/users")
+                .post("/register")
                 .then()
                 .log().status()
                 .log().body()
-                .body(matchesJsonSchemaInClasspath("homework/schemas/create_schema.json"))
-                .statusCode(201)
+                .body(matchesJsonSchemaInClasspath("homework/schemas/register_unsuccessful_schema.json"))
+                .statusCode(400)
                 .extract().response();
 
-        assertThat(response.path("name"), is("morpheus"));
-        assertThat(response.path("job"), is("leader"));
+        assertThat(response.path("error"), is("Missing password"));
     }
 }

@@ -13,13 +13,13 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class getDelayedResponseTest {
+public class GetDelayedResponseTest extends TestBase {
 
     @Test
     @DisplayName("Get Delayed response test")
     void getDelayedResponseShouldHaveStatus200() {
 
-        Response responseUserList = get("https://reqres.in/api/users?delay=3");
+        Response responseUserList = get("/users?delay=3");
         List<Map<String, Object>> users = responseUserList.path("data");
 
         Response response = given()
@@ -28,7 +28,7 @@ public class getDelayedResponseTest {
                 .log().body()
                 .contentType(JSON)
                 .when()
-                .get("https://reqres.in/api/users?delay=3")
+                .get("/users?delay=3")
                 .then()
                 .log().status()
                 .log().body()

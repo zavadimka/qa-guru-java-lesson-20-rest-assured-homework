@@ -7,29 +7,24 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 
-public class getListUsersTest {
+public class GetSingleUserNotFoundTest extends TestBase {
 
     @Test
-    @DisplayName("Get list users test")
-    void getListUsersShouldHaveStatus200() {
+    @DisplayName("Get Single user not found test")
+    void getSingleUserNotFoundShouldHaveStatus400() {
         Response response = given()
                 .log().uri()
                 .log().method()
                 .log().body()
                 .contentType(JSON)
                 .when()
-                .get("https://reqres.in/api/users?page=2")
+                .get("/users/23")
                 .then()
                 .log().status()
                 .log().body()
-                .body(matchesJsonSchemaInClasspath("homework/schemas/list_users_response_schema.json"))
-                .statusCode(200)
+                .body(matchesJsonSchemaInClasspath("homework/schemas/single_user_not_found_schema.json"))
+                .statusCode(404)
                 .extract().response();
-
-        assertThat(response.path("page"), is(2));
-        assertThat(response.path("data.id"), hasItems(7, 8, 9, 10, 11, 12));
     }
 }
